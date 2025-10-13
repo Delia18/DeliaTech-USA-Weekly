@@ -479,33 +479,168 @@
             margin-left: 2px;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: underline;
+            text-decoration-color: transparent;
         }
 
         .citation-number:hover {
             color: var(--light-blue);
             text-shadow: 0 0 8px rgba(144, 202, 249, 0.6);
+            text-decoration-color: var(--light-blue);
+            transform: scale(1.1);
         }
 
         .citation-tooltip {
             position: relative;
         }
 
-        .citation-tooltip:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--card-border);
+        /* Interactive Citation Modals */
+        .citation-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .citation-modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 30px;
+            border: 2px solid var(--card-border);
             border-radius: var(--radius);
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            z-index: 1000;
+            width: 90%;
+            max-width: 600px;
             box-shadow: var(--shadow);
-            margin-bottom: 5px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .citation-close {
+            color: var(--text-secondary);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .citation-close:hover {
+            color: var(--light-blue);
+        }
+
+        .citation-modal h3 {
+            color: var(--light-blue);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .citation-modal-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .citation-key-findings {
+            background: rgba(100, 181, 246, 0.1);
+            border-left: 4px solid var(--light-blue);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .citation-key-findings h4 {
+            color: var(--light-blue);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .citation-key-findings ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .citation-key-findings li {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .citation-access-btn {
+            background: linear-gradient(135deg, var(--accent-blue), var(--light-blue));
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .citation-access-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 181, 246, 0.4);
+        }
+
+        .external-link-icon {
+            font-size: 0.9rem;
+        }
+
+        /* Read More Buttons */
+        .read-more-btn {
+            background: rgba(100, 181, 246, 0.1);
+            border: 2px solid var(--light-blue);
+            color: var(--light-blue);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+        }
+
+        .read-more-btn:hover {
+            background: var(--light-blue);
+            color: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .metric-card .read-more-btn {
+            margin-top: 10px;
+            align-self: flex-start;
+        }
+
+        .enhanced-metric-card {
+            display: flex;
+            flex-direction: column;
         }
 
         .sources-section {
@@ -606,15 +741,15 @@
             <div class="executive-summary">
                 <div class="briefing-card">
                     <h3>Dashboard Purpose &amp; Scope</h3>
-                    <p>This intelligence dashboard presents comprehensive analysis of artificial intelligence adoption across the United States accounting profession during September-October 2025. Based on data from <strong>Wolters Kluwer's 2025 Future Ready Accountant report</strong> <span class="citation-number citation-tooltip" data-tooltip="Wolters Kluwer 2025 Future Ready Accountant Report">[1]</span>, <strong>MIT/Stanford research</strong> <span class="citation-number citation-tooltip" data-tooltip="MIT/Stanford Research on AI Impact">[2]</span>, and industry analysis, we document a <strong>356% increase in AI adoption rates</strong> <span class="citation-number citation-tooltip" data-tooltip="Wolters Kluwer 2025 Future Ready Accountant Report">[1]</span> and <strong>$1+ billion in institutional investments</strong> <span class="citation-number citation-tooltip" data-tooltip="Grant Thornton AI Workforce Investment">[3]</span> validating the transformation of professional accounting practice.</p>
+                    <p>This intelligence dashboard presents comprehensive analysis of artificial intelligence adoption across the United States accounting profession during September-October 2025. Based on data from <strong>Wolters Kluwer's 2025 Future Ready Accountant report</strong> <span class="citation-number citation-clickable" data-citation="1" data-tooltip="Click for full source details">[1]</span>, <strong>MIT/Stanford research</strong> <span class="citation-number citation-clickable" data-citation="2" data-tooltip="Click for full source details">[2]</span>, and industry analysis, we document a <strong>356% increase in AI adoption rates</strong> <span class="citation-number citation-clickable" data-citation="1" data-tooltip="Click for full source details">[1]</span> and <strong>$1+ billion in institutional investments</strong> <span class="citation-number citation-clickable" data-citation="3" data-tooltip="Click for full source details">[3]</span> validating the transformation of professional accounting practice.</p>
                 </div>
                 
                 <div class="briefing-card">
                     <h3>Key Strategic Findings</h3>
                     <ul class="findings-list">
-                        <li><strong>Market Validation:</strong> AI adoption jumped from 9% to 41% year-over-year <span class="citation-number citation-tooltip" data-tooltip="Wolters Kluwer 2025 Future Ready Accountant Report">[1]</span>, with 77% of firms planning investment increases <span class="citation-number citation-tooltip" data-tooltip="Wolters Kluwer 2025 Future Ready Accountant Report">[1]</span> <em>(Source: Wolters Kluwer 2025)</em></li>
+                        <li><strong>Market Validation:</strong> AI adoption jumped from 9% to 41% year-over-year <span class="citation-number citation-clickable" data-citation="1" data-tooltip="Click for full source details">[1]</span>, with 77% of firms planning investment increases <span class="citation-number citation-clickable" data-citation="1" data-tooltip="Click for full source details">[1]</span> <em>(Source: Wolters Kluwer 2025)</em></li>
                         <li><strong>Productivity Impact:</strong> AI-utilizing practitioners demonstrate 21% higher billable hours <span class="citation-number citation-tooltip" data-tooltip="MIT/Stanford Research on AI Impact">[2]</span> and 8.5% time reallocation to strategic work <span class="citation-number citation-tooltip" data-tooltip="MIT/Stanford Research on AI Impact">[2]</span> <em>(Source: MIT/Stanford Research)</em></li>
-                        <li><strong>Revenue Correlation:</strong> 87% revenue growth observed in AI-integrated firms <span class="citation-number citation-tooltip" data-tooltip="Wolters Kluwer 2025 Future Ready Accountant Report">[1]</span> vs. 12% in traditional practices</li>
+                        <li><strong>Revenue Correlation:</strong> 87% revenue growth observed in AI-integrated firms <span class="citation-number citation-clickable" data-citation="1" data-tooltip="Click for full source details">[1]</span> vs. 12% in traditional practices</li>
                         <li><strong>Institutional Investment:</strong> Grant Thornton's $1B commitment <span class="citation-number citation-tooltip" data-tooltip="Grant Thornton AI Workforce Investment">[3]</span> and PwC's matching investment signal industry transformation</li>
                     </ul>
                 </div>
@@ -623,7 +758,7 @@
                     <h3>What This Means for Accounting Professionals</h3>
                     <p><strong>The Evolution from Manual to AI-Enhanced Practice:</strong> We are witnessing the most significant transformation in accounting since the introduction of spreadsheet software. AI is not replacing accountants—it's elevating the profession from data processing to strategic advisory roles.</p>
                     
-                    <p><strong>Impact on Service Delivery:</strong> Firms implementing AI report reducing routine tasks by 70-80% while achieving 95%+ accuracy in automated processes <span class="citation-number">[6]</span>. This translates to delivering insights in days rather than weeks, fundamentally changing client expectations.</p>
+                    <p><strong>Impact on Service Delivery:</strong> Firms implementing AI report reducing routine tasks by 70-80% while achieving 95%+ accuracy in automated processes <span class="citation-number citation-clickable" data-citation="6" data-tooltip="Click for full source details">[6]</span>. This translates to delivering insights in days rather than weeks, fundamentally changing client expectations.</p>
                     
                     <p><strong>Competitive Implications:</strong> AI competency has become a baseline client expectation. Firms without AI capabilities face measurable disadvantages in client acquisition and retention, with premium pricing opportunities reserved for AI-competent practices.</p>
                 </div>
@@ -739,26 +874,28 @@
                         <div class="tool-name">QuickBooks AI Agents</div>
                         <div class="accuracy-badge">95%</div>
                     </div>
-                    <div class="tool-feature">Transaction categorization <span class="citation-number">[6]</span></div>
+                    <div class="tool-feature">Transaction categorization <span class="citation-number citation-clickable" data-citation="6" data-tooltip="Click for full source details">[6]</span></div>
                     <div class="tool-pricing">$65+/month</div>
                     <div class="tool-benefit">Enterprise AI for SMBs</div>
-                    <div class="citation">Source: Intuit Product Launch, 78% payment prediction accuracy <span class="citation-number">[6]</span></div>
+                    <div class="citation">Source: Intuit Product Launch, 78% payment prediction accuracy <span class="citation-number citation-clickable" data-citation="6" data-tooltip="Click for full source details">[6]</span></div>
+                    <a href="https://quickbooks.intuit.com/learn-support/en-us/help-article/alerts-notifications/innovations-ai-agents-coming-quickbooks-online/L3AxZPc8R_US_en_US" target="_blank" class="read-more-btn">Learn About AI Agents <span class="external-link-icon">↗</span></a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-header">
                         <div class="tool-name">Vic.ai</div>
-                        <div class="accuracy-badge">99.5% <span class="citation-number">[7]</span></div>
+                        <div class="accuracy-badge">99.5% <span class="citation-number citation-clickable" data-citation="7" data-tooltip="Click for full source details">[7]</span></div>
                     </div>
-                    <div class="tool-feature">AP automation <span class="citation-number">[7]</span></div>
+                    <div class="tool-feature">AP automation <span class="citation-number citation-clickable" data-citation="7" data-tooltip="Click for full source details">[7]</span></div>
                     <div class="tool-pricing">$500-2000/month</div>
                     <div class="tool-benefit">$50M+ working capital freed</div>
+                    <a href="https://www.vic.ai/blog/18-ai-tools-for-accounting-and-finance" target="_blank" class="read-more-btn">View Performance Data <span class="external-link-icon">↗</span></a>
                 </div>
                 <div class="tool-card">
                     <div class="tool-header">
                         <div class="tool-name">Truewind</div>
-                        <div class="accuracy-badge">47% <span class="citation-number">[8]</span></div>
+                        <div class="accuracy-badge">47% <span class="citation-number citation-clickable" data-citation="8" data-tooltip="Click for full source details">[8]</span></div>
                     </div>
-                    <div class="tool-feature">Close automation <span class="citation-number">[8]</span></div>
+                    <div class="tool-feature">Close automation <span class="citation-number citation-clickable" data-citation="8" data-tooltip="Click for full source details">[8]</span></div>
                     <div class="tool-pricing">$400-1200/month</div>
                     <div class="tool-benefit">Learns preferences over time</div>
                 </div>
@@ -786,12 +923,12 @@
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">Sept 30, 2025</div>
-                    <div class="timeline-title">QuickBooks AI Agents Launch <span class="citation-number">[6]</span></div>
-                    <div class="timeline-description">95% accuracy in transaction categorization <span class="citation-number">[6]</span>, 78% payment prediction accuracy <span class="citation-number">[6]</span>. Enterprise AI democratized for small business.</div>
+                    <div class="timeline-title">QuickBooks AI Agents Launch <span class="citation-number citation-clickable" data-citation="6" data-tooltip="Click for full source details">[6]</span></div>
+                    <div class="timeline-description">95% accuracy in transaction categorization <span class="citation-number citation-clickable" data-citation="6" data-tooltip="Click for full source details">[6]</span>, 78% payment prediction accuracy <span class="citation-number citation-clickable" data-citation="6" data-tooltip="Click for full source details">[6]</span>. Enterprise AI democratized for small business.</div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">Oct 1, 2025</div>
-                    <div class="timeline-title">ASU 2023-08 Effective <span class="citation-number">[9]</span></div>
+                    <div class="timeline-title">ASU 2023-08 Effective <span class="citation-number citation-clickable" data-citation="9" data-tooltip="Click for full source details">[9]</span></div>
                     <div class="timeline-description">Fair value reporting replaces complex impairment testing. Crypto accounting simplified with standardized measurement approaches.</div>
                     <div class="citation">Source: FASB Accounting Standards Update 2023-08</div>
                 </div>
@@ -843,7 +980,7 @@
             <h2 class="section-title">Regulatory Updates</h2>
             <div class="regulatory-grid">
                 <div class="regulatory-card">
-                    <h4>ASU 2023-08 <span class="citation-number">[9]</span></h4>
+                    <h4>ASU 2023-08 <span class="citation-number citation-clickable" data-citation="9" data-tooltip="Click for full source details">[9]</span></h4>
                     <div class="status-active">Effective Oct 1, 2025</div>
                     <p>Crypto fair value reporting</p>
                 </div>
@@ -853,7 +990,7 @@
                     <p>Financial reporting AI standards</p>
                 </div>
                 <div class="regulatory-card">
-                    <h4>Utah AI Policy Act <span class="citation-number">[10]</span></h4>
+                    <h4>Utah AI Policy Act <span class="citation-number citation-clickable" data-citation="10" data-tooltip="Click for full source details">[10]</span></h4>
                     <div class="status-active">Active</div>
                     <p>AI disclosure requirements</p>
                 </div>
@@ -910,7 +1047,7 @@
                 <div class="regulatory-card">
                     <h4>Utah AI Policy Act</h4>
                     <div class="status-active">Enforcement Active</div>
-                    <p><strong>AI Disclosure Requirements:</strong> Professional services firms must prominently disclose AI use in client engagements <span class="citation-number">[10]</span>. Sets precedent for nationwide regulations.</p>
+                    <p><strong>AI Disclosure Requirements:</strong> Professional services firms must prominently disclose AI use in client engagements <span class="citation-number citation-clickable" data-citation="10" data-tooltip="Click for full source details">[10]</span>. Sets precedent for nationwide regulations.</p>
                     <div class="citation">Source: Utah State Legislature</div>
                 </div>
                 
@@ -942,10 +1079,10 @@
             <div class="briefing-card">
                 <h3>AI Categories Transforming Accounting</h3>
                 <div class="findings-list">
-                    <li><strong>AI Agents:</strong> Autonomous systems completing multi-step accounting tasks without human intervention. QuickBooks AI achieves 95% transaction categorization accuracy <span class="citation-number citation-tooltip" data-tooltip="QuickBooks AI Agent Performance">[6]</span>.</li>
+                    <li><strong>AI Agents:</strong> Autonomous systems completing multi-step accounting tasks without human intervention. QuickBooks AI achieves 95% transaction categorization accuracy <span class="citation-number citation-clickable" data-citation="6" data-tooltip="Click for full source details">[6]</span>.</li>
                     <li><strong>Generative AI:</strong> Financial reporting automation with 75% time reduction in footnote preparation and comprehensive financial statement generation.</li>
                     <li><strong>Machine Learning:</strong> Pattern recognition for fraud detection, risk assessment, and predictive analytics with continuously improving accuracy.</li>
-                    <li><strong>Process Automation:</strong> End-to-end workflow automation from data entry through reporting, achieving 99.5% accuracy in accounts payable processing <span class="citation-number citation-tooltip" data-tooltip="Vic.ai Performance Metrics">[7]</span>.</li>
+                    <li><strong>Process Automation:</strong> End-to-end workflow automation from data entry through reporting, achieving 99.5% accuracy in accounts payable processing <span class="citation-number citation-clickable" data-citation="7" data-tooltip="Click for full source details">[7]</span>.</li>
                 </div>
             </div>
             
@@ -1050,7 +1187,7 @@
                 
                 <div class="professional-note">
                     <h4>Risk Management</h4>
-                    <p><strong>Compliance Focus:</strong> Proactive governance framework addresses regulatory requirements <span class="citation-number citation-tooltip" data-tooltip="Utah AI Policy Act & SEC Guidelines">[10][11]</span> and maintains professional standards while enabling innovation.</p>
+                    <p><strong>Compliance Focus:</strong> Proactive governance framework addresses regulatory requirements <span class="citation-number citation-clickable" data-citation="10" data-tooltip="Click for full source details">[10]</span> and maintains professional standards while enabling innovation.</p>
                 </div>
             </div>
         </section>
@@ -1125,6 +1262,227 @@
                 <div class="reference-details">"Staff Guidance on AI Disclosure Requirements and AI Washing Prevention." 2025.</div>
             </div>
         </section>
+    </div>
+
+    <!-- Citation Modals -->
+    <div id="citation-modal-1" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>Wolters Kluwer 2025 Future Ready Accountant Report</h3>
+            <div class="citation-modal-description">
+                Comprehensive survey of 2,700+ accounting professionals on AI adoption trends, implementation challenges, and business impact across the United States accounting industry.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Key Findings:</h4>
+                <ul>
+                    <li>41% AI adoption rate (up from 9% in 2024)</li>
+                    <li>77% of firms planning AI investment increases</li>
+                    <li>87% revenue growth correlation with AI implementation</li>
+                    <li>73% of implementations exceeded expectations</li>
+                </ul>
+            </div>
+            <a href="https://www.wolterskluwer.com/en/news/wolters-kluwer-releases-its-2025-future-ready-accountant-report" target="_blank" class="citation-access-btn">
+                Access Full Report <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-2" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>MIT/Stanford AI Productivity Research</h3>
+            <div class="citation-modal-description">
+                Joint academic study examining AI's impact on accounting productivity, analyzing billable hours, task reallocation, and efficiency gains across professional accounting practices.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Key Findings:</h4>
+                <ul>
+                    <li>21% higher billable hours with AI integration</li>
+                    <li>8.5% time reallocation to strategic work</li>
+                    <li>7.5 days faster financial close processes</li>
+                    <li>Measurable quality improvements in deliverables</li>
+                </ul>
+            </div>
+            <a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-can-make-accountants-more-productive" target="_blank" class="citation-access-btn">
+                Read Research Study <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-3" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>Grant Thornton $1B AI Investment</h3>
+            <div class="citation-modal-description">
+                Major accounting firm's billion-dollar commitment to AI workforce transformation, representing the largest single AI investment in professional services history.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Key Details:</h4>
+                <ul>
+                    <li>$1 billion investment over 3 years</li>
+                    <li>Focus on multinational workforce enhancement</li>
+                    <li>Comprehensive AI transformation strategy</li>
+                    <li>Industry validation of AI importance</li>
+                </ul>
+            </div>
+            <a href="https://www.grantthornton.com/insights/press-releases/2025/september/gt-advisors-invest-to-arm-the-multinational-workforce" target="_blank" class="citation-access-btn">
+                View Press Release <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-4" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>Grand View Research Market Analysis</h3>
+            <div class="citation-modal-description">
+                Comprehensive AI in Accounting Market Size &amp; Trends Analysis Report covering market projections, growth drivers, and regional analysis for 2025-2033.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Key Projections:</h4>
+                <ul>
+                    <li>$96.69 billion market size by 2033</li>
+                    <li>39.6% compound annual growth rate (CAGR)</li>
+                    <li>Strong growth across all market segments</li>
+                    <li>Technology integration driving expansion</li>
+                </ul>
+            </div>
+            <a href="https://www.grandviewresearch.com/industry-analysis/ai-accounting-market-report" target="_blank" class="citation-access-btn">
+                Access Market Report <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-5" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>KBV Research North America Analysis</h3>
+            <div class="citation-modal-description">
+                Regional analysis of AI adoption in North American accounting markets, providing detailed breakdown of market share, growth patterns, and competitive landscape.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Regional Insights:</h4>
+                <ul>
+                    <li>79.2% US market share dominance</li>
+                    <li>Strong regional adoption patterns</li>
+                    <li>Comprehensive growth forecasts</li>
+                    <li>Competitive positioning analysis</li>
+                </ul>
+            </div>
+            <a href="https://www.kbvresearch.com/north-america-ai-in-accounting-market/" target="_blank" class="citation-access-btn">
+                View Analysis <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-6" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>QuickBooks AI Agent Performance</h3>
+            <div class="citation-modal-description">
+                Intuit's AI agent deployment results and performance metrics, demonstrating real-world application of artificial intelligence in small business accounting.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Performance Metrics:</h4>
+                <ul>
+                    <li>95% transaction categorization accuracy</li>
+                    <li>78% payment prediction accuracy</li>
+                    <li>Autonomous task completion capabilities</li>
+                    <li>Enterprise-grade AI for SMBs</li>
+                </ul>
+            </div>
+            <a href="https://quickbooks.intuit.com/learn-support/en-us/help-article/alerts-notifications/innovations-ai-agents-coming-quickbooks-online/L3AxZPc8R_US_en_US" target="_blank" class="citation-access-btn">
+                Learn About AI Agents <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-7" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>Vic.ai AP Automation Performance</h3>
+            <div class="citation-modal-description">
+                Accounts payable automation performance analysis and ROI metrics, showcasing the business impact of AI-driven process automation in enterprise accounting.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Performance Results:</h4>
+                <ul>
+                    <li>99.5% accounts payable accuracy</li>
+                    <li>$50M+ working capital optimization</li>
+                    <li>Significant automation ROI</li>
+                    <li>Enterprise-scale deployment success</li>
+                </ul>
+            </div>
+            <a href="https://www.vic.ai/blog/18-ai-tools-for-accounting-and-finance" target="_blank" class="citation-access-btn">
+                View Performance Data <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-8" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>FASB ASU 2023-08 Crypto Standards</h3>
+            <div class="citation-modal-description">
+                Financial Accounting Standards Board update requiring fair value reporting for cryptocurrency assets, effective October 1, 2025. Replaces complex impairment testing.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Key Requirements:</h4>
+                <ul>
+                    <li>Fair value reporting methodology</li>
+                    <li>Effective date: October 1, 2025</li>
+                    <li>Simplified crypto asset accounting</li>
+                    <li>Enhanced financial statement comparability</li>
+                </ul>
+            </div>
+            <a href="https://www.fasb.org/page/Document?pdf=ASU+2023-08.pdf&title=ACCOUNTING+STANDARDS+UPDATE+2023-08" target="_blank" class="citation-access-btn">
+                Read Full Standard <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-9" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>Utah AI Policy Act (UAIPA)</h3>
+            <div class="citation-modal-description">
+                State legislation requiring AI disclosure in professional services, setting precedent for nationwide AI transparency requirements in accounting and consulting practices.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Legal Requirements:</h4>
+                <ul>
+                    <li>Mandatory AI disclosure in professional services</li>
+                    <li>Client notification requirements</li>
+                    <li>Professional services compliance framework</li>
+                    <li>Template for national regulations</li>
+                </ul>
+            </div>
+            <a href="https://le.utah.gov/xcode/Title63G/Chapter28/63G-28.html" target="_blank" class="citation-access-btn">
+                Read Legislation <span class="external-link-icon">↗</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="citation-modal-10" class="citation-modal">
+        <div class="citation-modal-content">
+            <span class="citation-close">&times;</span>
+            <h3>SEC AI Disclosure Guidance</h3>
+            <div class="citation-modal-description">
+                Securities and Exchange Commission guidance on AI disclosure requirements and prevention of "AI washing" in public company communications and financial reporting.
+            </div>
+            <div class="citation-key-findings">
+                <h4>Regulatory Focus:</h4>
+                <ul>
+                    <li>AI washing prevention measures</li>
+                    <li>Enhanced disclosure requirements</li>
+                    <li>Federal regulatory guidance</li>
+                    <li>Public company compliance framework</li>
+                </ul>
+            </div>
+            <a href="https://www.sec.gov/news/press-release/2024-36" target="_blank" class="citation-access-btn">
+                View SEC Guidance <span class="external-link-icon">↗</span>
+            </a>
+        </div>
     </div>
 
     <script>
@@ -1266,12 +1624,79 @@
             });
         }
 
+        // Citation Modal Functionality
+        function initializeCitationModals() {
+            // Get all clickable citations
+            const citationNumbers = document.querySelectorAll('.citation-clickable');
+            const modals = document.querySelectorAll('.citation-modal');
+            const closeButtons = document.querySelectorAll('.citation-close');
+
+            // Add click event to each citation
+            citationNumbers.forEach(citation => {
+                citation.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const citationId = this.getAttribute('data-citation');
+                    const modal = document.getElementById(`citation-modal-${citationId}`);
+                    if (modal) {
+                        modal.style.display = 'block';
+                        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                    }
+                });
+            });
+
+            // Add close functionality
+            closeButtons.forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.citation-modal').style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+            });
+
+            // Close modal when clicking outside
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modals.forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Enhanced interactivity for citations
+        function enhanceCitationInteractivity() {
+            const citations = document.querySelectorAll('.citation-clickable');
+            
+            citations.forEach(citation => {
+                // Add hover effect
+                citation.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.15)';
+                });
+                
+                citation.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        }
+
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
             animateProgressBars();
             createAdoptionChart();
             createMarketChart();
             addInteractivity();
+            initializeCitationModals();
+            enhanceCitationInteractivity();
         });
     </script>
 </body>
